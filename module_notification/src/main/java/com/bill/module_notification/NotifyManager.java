@@ -6,7 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import java.util.Random;
 
@@ -90,19 +92,30 @@ public class NotifyManager {
     }
 
     /**
-     * 检查当前渠道的消息是否被禁止
+     * 检查当前渠道的通知是否可用，Android O及以上版本调用
+     * <p>
+     * 注：areNotificationsEnabled()返回false时，即当前App通知被关时，此方法仍可能返回true，
      *
      * @param channelId 渠道Id
-     * @return true：禁止
+     * @return false：不可用
      */
-    public boolean checkNotifyForbidden(String channelId) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
-            if (notificationChannel != null && notificationChannel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
-                return true;
-            }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean areChannelsEnabled(String channelId) {
+        NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+        if (notificationChannel != null && notificationChannel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * 检查通知是否可用
+     *
+     * @return false：不可用
+     */
+    public boolean areNotificationsEnabled() {
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        return notificationManagerCompat.areNotificationsEnabled();
     }
 
     /**

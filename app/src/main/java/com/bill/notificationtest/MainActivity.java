@@ -1,6 +1,7 @@
 package com.bill.notificationtest;
 
 import android.app.Notification;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -37,13 +38,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleSubscribe(View view) {
-        if (notifyManager.checkNotifyForbidden(Constants.CHANNEL_SUBSCRIBE)) {
-            Toast.makeText(getApplicationContext(), "当前渠道通知被关闭", Toast.LENGTH_SHORT).show();
+        if (!notifyManager.areNotificationsEnabled()) {
+            Toast.makeText(this, "总通知被关闭", Toast.LENGTH_SHORT).show();
             return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!notifyManager.areChannelsEnabled(Constants.CHANNEL_SUBSCRIBE)) {
+                Toast.makeText(getApplicationContext(), "当前渠道通知被关闭", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
         NotificationCompat.Builder builder = notifyManager.getDefaultBuilder(Constants.CHANNEL_SUBSCRIBE);
         builder.setContentTitle("订阅号通知");
-        builder.setContentText("guolin今晚讲解Kotlin，请注意观看");
+        builder.setContentText("您关注的公众号有新的订阅消息");
         Notification notification = builder.build();
         notifyManager.notifyNotify(notification);
     }
