@@ -28,7 +28,7 @@ public class NotifyManager {
         init();
     }
 
-    public void init() {
+    private void init() {
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         random = new Random();
     }
