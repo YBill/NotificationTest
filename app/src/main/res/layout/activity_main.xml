@@ -15,8 +15,21 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="handleSubscribe"
-        android:text="subscribe" />
+        android:onClick="handleCompete"
+        android:text="DownloadCompete" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="handleError"
+        android:text="DownloadError" />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="handleOther"
+        android:text="DownloadOther" />
 
 
 </LinearLayout>
