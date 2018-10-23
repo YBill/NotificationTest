@@ -30,7 +30,7 @@ public class NotifyManager {
     private NotificationManager notificationManager;
     private Random random;
 
-    public NotifyManager(Context context) {
+    public NotifyManager(@NonNull Context context) {
         this.context = context.getApplicationContext();
         init();
     }
@@ -61,7 +61,7 @@ public class NotifyManager {
      * @param groupName
      * @param channel
      */
-    public void createNotificationGroupWithChannel(String groupId, String groupName, ChannelEntity channel) {
+    public void createNotificationGroupWithChannel(@NonNull String groupId, @Nullable String groupName, @NonNull ChannelEntity channel) {
         ArrayList<ChannelEntity> channelList = new ArrayList<>();
         channelList.add(channel);
         createNotificationGroupWithChannel(groupId, groupName, channelList);
@@ -74,7 +74,7 @@ public class NotifyManager {
      * @param groupName
      * @param channelList
      */
-    public void createNotificationGroupWithChannel(String groupId, String groupName, ArrayList<ChannelEntity> channelList) {
+    public void createNotificationGroupWithChannel(@NonNull String groupId, @Nullable String groupName, @NonNull ArrayList<ChannelEntity> channelList) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             if (!TextUtils.isEmpty(groupId)) {
                 createNotificationGroup(groupId, groupName);
@@ -113,7 +113,7 @@ public class NotifyManager {
      * @param groupName
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationGroup(String groupId, String groupName) {
+    private void createNotificationGroup(@NonNull String groupId, @Nullable String groupName) {
         NotificationChannelGroup group = new NotificationChannelGroup(groupId, groupName);
         notificationManager.createNotificationChannelGroup(group);
     }
@@ -146,7 +146,7 @@ public class NotifyManager {
      * @param notification 通知具体内容
      * @return 通知Id
      */
-    public int notifyNotify(Notification notification) {
+    public int notifyNotify(@NonNull Notification notification) {
         int notifyId = getRandomId();
         return notifyNotify(notifyId, notification);
     }
@@ -158,7 +158,7 @@ public class NotifyManager {
      * @param notification 通知具体内容
      * @return
      */
-    public int notifyNotify(int notifyId, Notification notification) {
+    public int notifyNotify(int notifyId, @NonNull Notification notification) {
         notificationManager.notify(notifyId, notification);
         return notifyId;
     }
@@ -175,9 +175,10 @@ public class NotifyManager {
     /**
      * 默认设置，调用方可以添加和修改
      *
-     * @return NotificationCompat.Builder
+     * @param channelId
+     * @return
      */
-    public NotificationCompat.Builder getDefaultBuilder(String channelId) {
+    public NotificationCompat.Builder getDefaultBuilder(@NonNull String channelId) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         builder.setSmallIcon(R.drawable.push)
                 .setColor(Color.parseColor("#E92110"));
@@ -193,7 +194,7 @@ public class NotifyManager {
      * @return false：不可用
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public boolean areChannelsEnabled(String channelId) {
+    public boolean areChannelsEnabled(@NonNull String channelId) {
         NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
         if (notificationChannel != null && notificationChannel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
             return false;
