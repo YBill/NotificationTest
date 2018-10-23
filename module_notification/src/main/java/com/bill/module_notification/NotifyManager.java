@@ -5,8 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -207,6 +209,18 @@ public class NotifyManager {
     public boolean areNotificationsEnabled() {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         return notificationManagerCompat.areNotificationsEnabled();
+    }
+
+    /**
+     * 调转到渠道设置页
+     *
+     * @param channelId
+     */
+    public void gotoChannelSetting(@NonNull String channelId) {
+        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, channelId);
+        context.startActivity(intent);
     }
 
     /**
