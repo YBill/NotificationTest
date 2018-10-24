@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         channelEntityArrayList.add(downloadProgressChannel);
         notifyManager.createNotificationGroupWithChannel(Constants.GROUP_DOWNLOAD, "下载消息", channelEntityArrayList);
 
-        notifyManager.createNotificationChannel(Constants.CHANNEL_OTHER, "未分类", ImportanceType.IMPORTANCE_MIN, null);
+        ChannelEntity otherChannel = new ChannelEntity(Constants.CHANNEL_OTHER, "未分类", ImportanceType.IMPORTANCE_MIN);
+        otherChannel.setShowBadge(false);
+        notifyManager.createNotificationChannel(otherChannel);
     }
 
     public void handleChat(View view) {
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = notifyManager.getDefaultBuilder(Constants.CHANNEL_CHAT);
         builder.setContentTitle("收到了Bill发来的消息");
         builder.setContentText("今天晚上需要加班吗？");
+        builder.setNumber(1);
         Notification notification = builder.build();
         notifyManager.notifyNotify(notification);
     }
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = notifyManager.getDefaultBuilder(Constants.CHANNEL_DOWNLOAD_COMPLETE);
         builder.setContentTitle("下载完成");
         builder.setContentText("下载完成，可在我的下载中查看");
+        builder.setNumber(2);
         Notification notification = builder.build();
         notifyManager.notifyNotify(notification);
     }
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = notifyManager.getDefaultBuilder(Constants.CHANNEL_DOWNLOAD_ERROR);
         builder.setContentTitle("下载失败");
         builder.setContentText("由于网络中断导致下载失败");
+        builder.setNumber(3);
         Notification notification = builder.build();
         notifyManager.notifyNotify(notification);
     }
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = notifyManager.getDefaultBuilder(Constants.CHANNEL_OTHER);
         builder.setContentTitle("其他消息");
         builder.setContentText("系统通知消息");
+        builder.setNumber(4);
         Notification notification = builder.build();
         notifyManager.notifyNotify(notification);
     }

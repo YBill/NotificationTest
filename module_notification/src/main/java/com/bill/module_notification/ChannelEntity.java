@@ -4,10 +4,11 @@ import android.support.annotation.NonNull;
 
 public class ChannelEntity {
 
-    private String channelId;
-    private String channelName;
-    private int importance;
-    private String description;
+    private String channelId; // 渠道Id
+    private String channelName; // 渠道名称
+    private int importance; // 重要等级
+    private String description; // 描述
+    private boolean showBadge = true; // 是否显示icon角标
 
     public ChannelEntity(@NonNull String channelId, @NonNull String channelName, @ImportanceType int importance) {
         this.channelId = channelId;
@@ -33,5 +34,13 @@ public class ChannelEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isShowBadge() {
+        return showBadge;
+    }
+
+    public void setShowBadge(boolean showBadge) {
+        this.showBadge = showBadge;
     }
 }

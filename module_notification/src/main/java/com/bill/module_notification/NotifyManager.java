@@ -43,14 +43,11 @@ public class NotifyManager {
     /**
      * 创建渠道
      *
-     * @param channelId   渠道Id
-     * @param channelName 渠道名
-     * @param importance  等级
-     * @param description 渠道描述
+     * @param channelEntity 渠道消息
      */
-    public void createNotificationChannel(@NonNull String channelId, @NonNull String channelName, @ImportanceType int importance, @Nullable String description) {
+    public void createNotificationChannel(ChannelEntity channelEntity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(channelId, channelName, importance, description, null);
+            createNotificationChannel(channelEntity, null);
         }
     }
 
@@ -81,7 +78,7 @@ public class NotifyManager {
             }
 
             for (ChannelEntity channel : channelList) {
-                createNotificationChannel(channel.getChannelId(), channel.getChannelName(), channel.getImportance(), channel.getDescription(), groupId);
+                createNotificationChannel(channel, groupId);
             }
         }
     }
@@ -89,18 +86,15 @@ public class NotifyManager {
     /**
      * 创建渠道，并创建组
      *
-     * @param channelId
-     * @param channelName
-     * @param importance
-     * @param description
+     * @param channelEntity
      * @param groupId
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationChannel(@NonNull String channelId, @NonNull String channelName, @ImportanceType int importance,
-                                           @Nullable String description, @Nullable String groupId) {
-        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        if (!TextUtils.isEmpty(description))
-            channel.setDescription(description);
+    private void createNotificationChannel(@NonNull ChannelEntity channelEntity, @Nullable String groupId) {
+        NotificationChannel channel = new NotificationChannel(channelEntity.getChannelId(), channelEntity.getChannelName(), channelEntity.getImportance());
+        channel.setShowBadge(channelEntity.isShowBadge());
+        if (!TextUtils.isEmpty(channelEntity.getDescription()))
+            channel.setDescription(channelEntity.getDescription());
         if (!TextUtils.isEmpty(groupId))
             channel.setGroup(groupId);
         notificationManager.createNotificationChannel(channel);
